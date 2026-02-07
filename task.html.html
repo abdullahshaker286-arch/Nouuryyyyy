@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>Nouryyyyyyyyy</title>
+<style>
+body {
+    margin: 0;
+    height: 100vh;
+    font-family: Arial;
+    background-color: #fff0f5;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* فقاعة وردية في الخلفية */
+body::after {
+    content: "";
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    background: radial-gradient(circle, #ffc0cb 0%, transparent 70%);
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: -2;
+    opacity: 0.4;
+}
+
+/* وردة كبيرة في الخلفية */
+body::before {
+    content: "🌸";
+    position: absolute;
+    font-size: 100vw;
+    opacity: 0.2;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: -1;
+}
+
+/* الحاوية للمربعات */
+.square-container {
+    width: 90vw;
+    height: 90vh;
+    position: relative;
+}
+
+/* الخانات الصغيرة */
+.box-small {
+    width: 18vw;
+    height: 18vh;
+    background-color: #8B0000;
+    color: white;
+    border-radius: 15px;
+    text-align: center;
+    padding: 10px;
+    position: absolute;
+    cursor: default;
+    overflow: visible;
+}
+.box-small.top-left { top: 0; left: 0; }
+.box-small.top-right { top: 0; right: 0; }
+.box-small.bottom-left { bottom: 0; left: 0; }
+.box-small.bottom-right { bottom: 0; right: 0; }
+
+/* المربع الكبير */
+.box-big {
+    width: 40vw;
+    height: 40vh;
+    background-color: #FF69B4;
+    color: white;
+    border-radius: 20px;
+    text-align: center;
+    padding: 10px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    cursor: default;
+    overflow: hidden;
+}
+
+/* الوردة فوق كل خانة */
+.flower {
+    font-size: 35px;
+    cursor: pointer;
+    display: block;
+    margin-bottom: 10px;
+}
+
+/* الكلام والفيديو مخفي */
+.text, .big-video {
+    display: none;
+    position: relative;
+    z-index: 2;
+    font-size: 20px;
+}
+
+/* الفيديو يغطي المربع الكبير */
+.big-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* الفراشات تغطي الشاشة */
+.butterfly {
+    position: absolute;
+    font-size: 150px; /* كبير وواضح */
+    pointer-events: none;
+    z-index: 10;
+    opacity: 0.9;
+    transform-origin: center;
+    animation: flyExplosion 3s forwards;
+}
+
+@keyframes flyExplosion {
+    0% {
+        transform: translate(0,0) rotate(0deg) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(
+            calc(-200px + 400px * var(--randX)), 
+            calc(-200px + 400px * var(--randY))
+        ) 
+        rotate(calc(360deg * var(--randRotate))) 
+        scale(calc(0.5 + var(--randScale)));
+        opacity: 0;
+    }
+}
+</style>
+</head>
+<body>
+
+<div class="square-container">
+
+    <!-- الأربع خانات الصغيرة -->
+    <div class="box-small top-left">
+        <span class="flower">🌸</span>
+        <div class="text">شكرا انك موجوده 🌟🌟🌟🌟🌟  </div>
+      <div class="text">🌟🌟🌟🌟🌟</div>
+    </div>
+
+    <div class="box-small top-right">
+        <span class="flower">🌸</span>
+        <div class="text">شكرا انك بتخلي الحياه احسن وحتى لو مش سهله بس في امل دايما🌸🌸🌸🌸🌸    </div>
+    </div>
+
+    <div class="box-small bottom-left">
+        <span class="flower">🌸</span>
+        <div class="text">شكرا انك بتديني الفرص ايا كان استحقها او لا</div>
+    </div>
+
+    <div class="box-small bottom-right">
+        <span class="flower">🌸</span>
+        <div class="text">شكرا انك بعد الترم ده خليتيني ابقى عايز اقوم من النوم كل يوم تاني ❤️❤️</div>
+    </div>
+
+    <!-- المربع الكبير -->
+    <div class="box-big">
+        <span class="flower">🌸</span>
+        <video class="big-video" src="N.mp4" controls></video>
+        <div class="text">المربع الكبير مع الفيديو! 🦋🌸🎶</div>
+    </div>
+
+</div>
+
+<script>
+const flowers = document.querySelectorAll('.flower');
+
+flowers.forEach(flower => {
+    flower.addEventListener('click', () => {
+        const parentBox = flower.parentElement;
+
+        // الكلام
+        const text = parentBox.querySelector('.text');
+        text.classList.toggle('show');
+        text.style.display = text.classList.contains('show') ? 'block' : 'none';
+
+        // الفيديو (لو موجود)
+        const video = parentBox.querySelector('.big-video');
+        if(video){
+            if(video.paused){
+                video.play();
+            } else {
+                video.pause();
+            }
+            video.style.display = 'block';
+        }
+
+        // الفراشات تغطي الشاشة
+        for(let i=0; i<15; i++){ // عدد أكبر
+            createExplosionButterfly(parentBox);
+        }
+    });
+});
+
+function createExplosionButterfly(box){
+    const butterfly = document.createElement('span');
+    const butterflyEmojis = ["🦋","😋","💖","✨","🌸"];
+    butterfly.textContent = butterflyEmojis[Math.floor(Math.random()*butterflyEmojis.length)];
+    butterfly.className = 'butterfly';
+    
+    // موقع البداية في وسط المربع
+    butterfly.style.left = `${box.offsetWidth/2}px`;
+    butterfly.style.top = `${box.offsetHeight/2}px`;
+
+    // خصائص عشوائية للانفجار
+    butterfly.style.setProperty('--randX', Math.random());
+    butterfly.style.setProperty('--randY', Math.random());
+    butterfly.style.setProperty('--randRotate', Math.random()*2);
+    butterfly.style.setProperty('--randScale', Math.random());
+
+    box.appendChild(butterfly);
+    
+    setTimeout(() => {
+        box.removeChild(butterfly);
+    }, 3000);
+}
+</script>
+
+</body>
+</html>
